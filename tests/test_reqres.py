@@ -67,3 +67,26 @@ def test_login_unsuccessful():
     assert res.status_code == 400
     assert res.text == '{"error":"Missing password"}'
 
+
+def test_single():
+    res = requests.get('https://reqres.in/api/unknown/23')
+
+    assert res.status_code == 404
+    assert res.text == '{}'
+
+
+def test_list_resource():
+    res = requests.get('https://reqres.in/api/unknown')
+
+    assert res.status_code == 200
+    assert res.json()['total_pages'] == 2
+
+
+def test_login_successful():
+    res = requests.post('https://reqres.in/api/login', json={
+        "email": "eve.holt@reqres.in",
+        "password": "cityslicka"
+    })
+
+    assert res.status_code == 200
+    assert res.text == '{"token":"QpwL5tke4Pnpja7X4"}'
